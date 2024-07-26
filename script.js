@@ -76,8 +76,8 @@ radar.addEventListener('mouseleave', () => {
     }
 });
 
-function padNumber(number) {
-    return number.toString().padStart(3, '0');
+function padNumber(number, length = 2) {
+    return number.toString().padStart(length, '0');
 }
 
 function displayHeadingText(angle, midX, midY) {
