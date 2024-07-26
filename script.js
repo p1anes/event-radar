@@ -18,6 +18,7 @@ radar.addEventListener('dragstart', (e) => {
 });
 
 radar.addEventListener('mousedown', (e) => {
+    if (e.target.closest('.timer-box')) return;
     removeExistingLineAndHeading();
     const rect = radar.getBoundingClientRect();
     startX = e.clientX - rect.left;
@@ -31,7 +32,7 @@ radar.addEventListener('mousedown', (e) => {
 });
 
 radar.addEventListener('mousemove', (e) => {
-    if (!isDragging) return;
+    if (!isDragging || e.target.closest('.timer-box')) return;
     const rect = radar.getBoundingClientRect();
     const currentX = e.clientX - rect.left;
     const currentY = e.clientY - rect.top;
@@ -43,7 +44,7 @@ radar.addEventListener('mousemove', (e) => {
         angle += 360;
     }
     line.style.width = `${length}px`;
-    line.style.transform = `rotate(${angle}deg)`;
+    line.style.transform = `translate(${startX}px, ${startY}px) rotate(${angle}deg)`;
     let displayedAngle = (angle + 90) % 360;
     if (displayedAngle < 0) {
         displayedAngle += 360;
@@ -80,59 +81,22 @@ function displayHeadingText(angle, midX, midY) {
     radar.appendChild(headingText);
 }
 
-const timer = document.getElementById('timer');
-const timeDisplay = document.getElementById('time-display');
-const buttons = document.querySelectorAll('#buttons button');
-let dragOffsetX, dragOffsetY, isTimerDragging = false, countdownInterval, currentTime = 0;
+let timerBox = document.getElementById('timer');
+let offsetX, offsetY, isTimerDragging = false;
 
-timer.addEventListener('mousedown', (e) => {
+timerBox.addEventListener('mousedown', (e) => {
+    e.preventDefault();
+    offsetX = e.clientX - timerBox.getBoundingClientRect().left;
+    offsetY = e.clientY - timerBox.getBoundingClientRect().top;
     isTimerDragging = true;
-    const rect = timer.getBoundingClientRect();
-    dragOffsetX = e.clientX - rect.left;
-    dragOffsetY = e.clientY - rect.top;
 });
 
 document.addEventListener('mousemove', (e) => {
     if (!isTimerDragging) return;
-    timer.style.left = `${e.clientX - dragOffsetX}px`;
-    timer.style.top = `${e.clientY - dragOffsetY}px`;
+    timerBox.style.left = `${e.clientX - offsetX}px`;
+    timerBox.style.top = `${e.clientY - offsetY}px`;
 });
 
 document.addEventListener('mouseup', () => {
     isTimerDragging = false;
 });
-
-buttons.forEach(button => {
-    button.addEventListener('click', () => {
-        const time = parseInt(button.getAttribute('data-time'), 10);
-        setTime(time);
-    });
-});
-
-document.getElementById('reset').addEventListener('click', resetTimer);
-
-function setTime(seconds) {
-    clearInterval(countdownInterval);
-    currentTime = seconds;
-    updateTimeDisplay();
-    countdownInterval = setInterval(() => {
-        if (currentTime > 0) {
-            currentTime--;
-            updateTimeDisplay();
-        } else {
-            clearInterval(countdownInterval);
-        }
-    }, 1000);
-}
-
-function updateTimeDisplay() {
-    const minutes = Math.floor(currentTime / 60);
-    const seconds = currentTime % 60;
-    timeDisplay.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
-}
-
-function resetTimer() {
-    clearInterval(countdownInterval);
-    currentTime = 0;
-    updateTimeDisplay();
-}
