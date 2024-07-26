@@ -77,7 +77,7 @@ radar.addEventListener('mouseleave', () => {
 });
 
 function padNumber(number) {
-    return number.toString().padStart(2, '0');
+    return number.toString().padStart(3, '0');
 }
 
 function displayHeadingText(angle, midX, midY) {
@@ -99,7 +99,7 @@ let timerDisplay = document.getElementById('timer-display');
 
 document.querySelectorAll('.timer-button').forEach(button => {
     button.addEventListener('click', () => {
-        clearInterval(timerInterval); // Clear any existing timer
+        clearInterval(timerInterval);
 
         if (button.id === 'clear') {
             timerDisplay.textContent = '00:00';
