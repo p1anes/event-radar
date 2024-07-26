@@ -99,8 +99,9 @@ let timerDisplay = document.getElementById('timer-display');
 
 document.querySelectorAll('.timer-button').forEach(button => {
     button.addEventListener('click', () => {
+        clearInterval(timerInterval); // Clear any existing timer
+
         if (button.id === 'clear') {
-            clearInterval(timerInterval);
             timerDisplay.textContent = '00:00';
             return;
         }
