@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ATC Radar</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="radar">
+        <div id="map-container">
+            <div class="map-background"></div>
+            <img id="map" src="map.png" alt="Game Map">
+        </div>
+        <div id="timer" class="draggable">
+            <div id="time-display">0:00</div>
+            <div id="buttons">
+                <button data-time="30">0:30</button>
+                <button data-time="45">0:45</button>
+                <button data-time="60">1:00</button>
+                <button data-time="75">1:15</button>
+                <button data-time="90">1:30</button>
+                <button id="reset">C</button>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
